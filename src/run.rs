@@ -1,28 +1,31 @@
 use super::*;
 
-/// ArgSource controls where the program arguments are received from.
+/// `ArgSource` controls where the program arguments are received from.
 enum ArgSource {
   OS,
   Is(Vec<String>),
 }
 
 /// Main entry point into just binary, taking arguments provided by the OS.
+#[allow(clippy::missing_errors_doc)]
 pub fn run() -> Result<(), i32> {
   run_with_arg_source(ArgSource::OS)
 }
 
 /// Main entry point into just library, taking arguments provided by Vec<&str>
+#[allow(clippy::missing_errors_doc, clippy::module_name_repetitions)]
 pub fn run_with_args(args: Vec<&str>) -> Result<(), i32> {
-  let args: Vec<String> = Vec::from_iter(
-    vec!["just".to_string()].into_iter().chain(
+  let args: Vec<String> = vec!["just".to_string()]
+    .into_iter()
+    .chain(
       args
         .iter()
         .map(|&s| s.into())
         .collect::<Vec<String>>()
         .iter()
         .cloned(),
-    ),
-  );
+    )
+    .collect();
   run_with_arg_source(ArgSource::Is(args))
 }
 
